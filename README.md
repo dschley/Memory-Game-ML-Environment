@@ -32,6 +32,10 @@ Otherwise, you can just interact with the game and check the state with the func
  Need to take into consideration things such as considering this a non-markovian task 
  as well as considering the perceptual aliasing issue.
  
+ Before jumping into memory modules, I want to test this out with a simple LSTM with policy gradients 
+ just to test the waters.  I'll consider a game a win if it is completed with less than double the optimal number of moves
+ to solve a puzzle of a certain size.
+ 
  Examining several papers that address these issues:
  - [A SHORT SURVEY ON MEMORY BASED REINFORCEMENT LEARNING](https://arxiv.org/pdf/1904.06736.pdf)
     - Method 1: Model Free Episodic Control:
@@ -91,6 +95,18 @@ Otherwise, you can just interact with the game and check the state with the func
         components that drives this solution.  This seems like the best solution so far for this type of problem because 
         if the prediction is accurate, then it's simply just training the policy to match as if the environment was fully
         observable which is pretty simple.
+        
+    - Method 7: Memory Augmented Control Network (MACN):
+        - This model is also intended for navigation in a partially observable environment
+        - It observes the locally observable state through a CNN, and hands that off to a network that determines its value function. 
+        This value is then used as the key to this observation in the memory.  The locally observed state's value from this
+        and the raw feature output from the CNN are fed to a controller network that feeds into itself, a memory reading 
+        network, as well as the policy network.  The memory network that is fed input from the controller feeds past outputs
+        into itself as well as outputting to the policy network alongside the controller net.
+        - The intention is to give both the currently observed state as well as the overall hidden state space some stake 
+        in the decision process while also allowing them to influence each other.
+        - This has potential to be a good solution, however I'm not sure how the value network will behave in this architecture
+        for this problem because the rewards are so sparse and it doesn't take a long series of actions to accomplish a goal, only 2.
          
  An episodic memory structure may be what we need for this.  Giving an opportunity for past observations
  within the episode to have bearing on future decisions.  In order to make the memories more "positive" 

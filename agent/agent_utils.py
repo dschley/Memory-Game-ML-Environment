@@ -1,5 +1,6 @@
 import tensorflow as tf
 from models.actor_critic_utils import ActorCriticNetwork
+from models.rnn_utils import RNN
 
 
 class Agent:
@@ -15,7 +16,7 @@ class Agent:
         :param action_size: N^2 for the number of possible moves it could select.
         OR not needed and just uses state size to determine max range in selection of coordinates.
         """
-        self.network = ActorCriticNetwork(state_size, action_size)
+        self.network = RNN(state_size)
 
     def act(self, state):
         pass

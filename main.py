@@ -2,12 +2,12 @@ from board.board_utils import Board
 
 
 class Game:
-    def __init__(self, board_length=4, max_turns=64):
+    def __init__(self, board_length=4, max_turns=24):
         self.board_length = board_length
         self.board = Board(self.board_length)
 
         self.num_turns = 0
-        self.max_turns = max_turns
+        self.max_turns = max_turns  # optimal "worst case" solution: 3 * ((board_length ^ 2) / 2)
 
         self.score = 0
 
